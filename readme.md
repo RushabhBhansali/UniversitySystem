@@ -1,0 +1,1 @@
+University information management CRUD WebApp created with JSP, Servlet and MySQL
