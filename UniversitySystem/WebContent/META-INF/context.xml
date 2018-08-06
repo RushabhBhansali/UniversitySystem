@@ -1,0 +1,11 @@
+<Context>
+
+	<!--This file content needs to be modified as per individual MySQL database setup on the system -->
+  <Resource name="jdbc/web_student_tracker" 
+  auth="Container" type="javax.sql.DataSource"
+  maxActive="20" maxIdle="5" maxWait="10000"
+  username="admin" password="admin" 
+  driverClassName="com.mysql.jdbc.Driver"
+  url="jdbc:mysql://localhost:3306/web_student_tracker?useSSL=false"/>
+  
+</Context>
