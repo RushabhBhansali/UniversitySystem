@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 
-
+//This is a test servlet written to test the database connection of the app.
 /**
  * Servlet implementation class TestServlet
  */
