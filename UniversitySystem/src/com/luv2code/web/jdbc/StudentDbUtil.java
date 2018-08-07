@@ -82,6 +82,11 @@ public class StudentDbUtil {
 		}
 		
 	}
+
+	public void addStudent(Student theStudent) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
