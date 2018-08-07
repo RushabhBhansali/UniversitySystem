@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.luv2code.web.jdbc.*" %>
+<%@ taglib uri= "http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,7 @@
 <%
  //get the students from the request object (sent by servlet)
  	List<Student> theStudents = (List<Student>) request.getAttribute("STUDENT_LIST");
+	pageContext.setAttribute("studentList", theStudents);
 %>
 
 <body>
@@ -28,6 +30,15 @@
 				<th>Email</th>
 				</tr>
 				
+				<c:forEach var="student" items="${studentList}">
+					<tr>
+						<td>  ${student.getFirstName()} </td>
+						<td> ${student.getLastName()} </td>
+						<td> ${student.getEmail()}</td>
+					</tr>
+				</c:forEach>
+				
+			<%-- 
 				<% for(Student tempStudent: theStudents){%>
 					<tr>
 						<td> <%= tempStudent.getFirstName() %> </td>
@@ -35,6 +46,10 @@
 						<td> <%= tempStudent.getEmail() %> </td>
 					</tr>
 			<%	} %>
+				 --%>
+				
+				
+				
 				
 			</table>
 		</div>
@@ -42,3 +57,4 @@
 </body>
 
 </html>
+
