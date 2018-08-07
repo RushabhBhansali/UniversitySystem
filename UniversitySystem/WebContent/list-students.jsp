@@ -19,10 +19,17 @@
 		<div id="header">
 			<h2> University Name </h2>
 		</div>
-	</div>
+	</div>	
+	
 
 	<div id="wrapper">
 		<div id="content">
+			<br/><br/>
+			<form action="add-student-form.jsp">
+				<button type="submit">Add Student</button>
+			</form>
+			<br/><br/>
+		
 			<table>
 				<tr> 
 				<th>First Name</th>
@@ -46,10 +53,7 @@
 						<td> <%= tempStudent.getEmail() %> </td>
 					</tr>
 			<%	} %>
-				 --%>
-				
-				
-				
+				 --%>		
 				
 			</table>
 		</div>
