@@ -23,6 +23,11 @@
 
 	<div id="wrapper">
 		<div id="content">
+	<!-- 	put new button -->
+			<br/>	
+			<input type="button" value="Add Student" onclick="window.location.href='add-student-form.jsp'; return false;" 
+			class="add-student-button"/>
+		
 			<table>
 				<tr> 
 				<th>First Name</th>
