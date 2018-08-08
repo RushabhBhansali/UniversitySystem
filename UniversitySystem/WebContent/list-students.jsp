@@ -33,13 +33,20 @@
 				<th>First Name</th>
 				<th>Last Name</th>
 				<th>Email</th>
+				<th>Action</th>
 				</tr>
 				
 				<c:forEach var="student" items="${studentList}">
+					<!-- set up a link for each student -->
+					<c:url var="tempLink" value="StudentControllerServlet">
+						<c:param name="command" value="LOAD"/>
+						<c:param name="studentId" value="${student.getId()}"/>
+					</c:url>
 					<tr>
 						<td>  ${student.getFirstName()} </td>
 						<td> ${student.getLastName()} </td>
 						<td> ${student.getEmail()}</td>
+						<td><a href="${tempLink}">Update</a></td>
 					</tr>
 				</c:forEach>
 				
