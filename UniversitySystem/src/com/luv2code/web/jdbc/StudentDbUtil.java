@@ -157,7 +157,42 @@ public class StudentDbUtil {
 		}
 		
 	}
-	
+
+	public void updateStudent(Student theStudent) throws Exception{
+	// update student record of a give studentid with approprate student object values
+		//create connection objects
+		System.out.println("dbutil update student entered");
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		try {
+			//int theStudentId = Integer.parseInt(studentId);
+			
+			//initialize connection object
+			myConn = datasource.getConnection();
+		//write sql statements
+			String sql = "update student set first_name=?, "
+					+ "last_name=?, email=? "
+					+ "where id=?";
+		
+		//preparestatement by inserting parameters
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setString(1, theStudent.getFirstName());
+			myStmt.setString(2, theStudent.getLastName());
+			myStmt.setString(3, theStudent.getEmail());
+			myStmt.setInt(4, theStudent.getId());
+		
+		//execute query
+		
+			if(!myStmt.execute()) {
+				throw new Exception("query problem");
+			}
+			
+		}
+		finally {
+			//close the connections
+			close(myConn, myStmt, null);
+		}		
+	}
 	
 	
 	

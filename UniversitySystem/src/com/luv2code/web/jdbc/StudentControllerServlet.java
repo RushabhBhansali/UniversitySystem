@@ -53,23 +53,25 @@ public class StudentControllerServlet extends HttpServlet {
 				}
 				
 				switch(theCommand) {
-					case "LIST":
-						listStudent(request,response);
-						break;
+				case "LIST":
+					listStudents(request, response);
+					break;
 					
+				case "ADD":
+					addStudent(request, response);
+					break;
 					
-					case "ADD":
-						addStudent(request, response);
-						break;
+				case "LOAD":
+					loadStudent(request, response);
+					break;
 					
+				case "UPDATE":
+					updateStudent(request, response);
+					break;
 					
-					case "LOAD":
-						loadStudent(request, response);
-						break;
-					
-					
-					default:
-						listStudent(request,response);
+								
+				default:
+					listStudents(request, response);
 				
 				}
 			
@@ -81,8 +83,55 @@ public class StudentControllerServlet extends HttpServlet {
 	}
 
 
+	/*private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("updateStudent() entered");
+		
+		//get all the paramaters from the request object
+		String studentId = request.getParameter("studentId");
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		
+		//create new student object with null studentId
+		Student theStudent = new Student(firstName,lastName,email);
+		
+		//perform update on database for a specific student id
+		studentDbUtil.updateStudent(studentId,theStudent);
+		
+		
+		// redirect to the student-list page.
+		listStudent(request,response);
+		
+	}
+*/
+
+	
+	private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		
+		//get all the paramaters from the request object
+		int id = Integer.parseInt(request.getParameter("studentId"));
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		
+		//create new student object with null studentId
+		Student theStudent = new Student(id,firstName,lastName,email);
+		
+		//perform update on database for a specific student id
+		studentDbUtil.updateStudent(theStudent);
+		
+		
+		// redirect to the student-list page.
+		listStudents(request,response);
+		
+	}
+
 	private void loadStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//get the student id from the form data
+		
+		System.out.println("load student entered");
 		String theStudentId = request.getParameter("studentId");
 		//get the student from database
 		Student theStudent =studentDbUtil.getStudent(theStudentId);
@@ -109,11 +158,11 @@ public class StudentControllerServlet extends HttpServlet {
 		studentDbUtil.addStudent(theStudent);
 		
 		//send back to main page (the student list)
-		listStudent(request,response);
+		listStudents(request,response);
 	}
 
 
-	private void listStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private void listStudents(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//get the students from db util
 		List<Student> students = studentDbUtil.getStudents();
 		//add students to the request
