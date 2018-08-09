@@ -55,7 +55,10 @@
 						<td> ${tempStudent.lastName} </td>
 						<td> ${tempStudent.email} </td>
 						<td> 
-							<a href="${tempLink}">Update</a> | <a href="${tempLinkDelete}">Delete</a> 
+							<a href="${tempLink}">Update</a>
+							 | 
+							 <a href="${tempLinkDelete}" onclick="if (!(confirm('Are you sure you want to delete this student'))) return false">Delete</a> 
+							 
 						</td>
 					</tr>
 				
