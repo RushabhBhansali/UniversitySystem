@@ -66,6 +66,10 @@ private StudentDbUtil studentDbUtil;
 			case "UPDATE":
 				updateStudent(request, response);
 				break;
+				
+			case "DELETE":
+				deleteStudent(request, response);
+				break;
 							
 			default:
 				listStudents(request, response);
@@ -76,6 +80,15 @@ private StudentDbUtil studentDbUtil;
 			throw new ServletException(exc);
 		}
 		
+	}
+
+	private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		int id = Integer.parseInt(request.getParameter("studentId"));
+		
+		studentDbUtil.deleteStudent(id);
+		
+		listStudents(request, response);
 	}
 
 	private void updateStudent(HttpServletRequest request, HttpServletResponse response)
