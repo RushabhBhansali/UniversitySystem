@@ -167,7 +167,7 @@ public class StudentDbUtil {
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		
-		PreparedStatement myStmt1 = null;
+		//PreparedStatement myStmt1 = null;
 
 		try {
 			// get db connection
@@ -201,6 +201,34 @@ public class StudentDbUtil {
 			myStmt1.execute();*/
 			
 			
+		}
+		finally {
+			// clean up JDBC objects
+			close(myConn, myStmt, null);
+		}
+	}
+
+	public void deleteStudent(int id) throws Exception {
+		// TODO Auto-generated method stub
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+			// get db connection
+			myConn = dataSource.getConnection();
+			
+			// create SQL update statement
+			String sql = "delete from student "
+						+ "where id=?";
+			
+			// prepare statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, id);
+			
+			// execute SQL statement
+			myStmt.execute();		
 		}
 		finally {
 			// clean up JDBC objects
