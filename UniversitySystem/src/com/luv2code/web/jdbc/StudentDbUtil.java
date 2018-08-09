@@ -13,13 +13,14 @@ import javax.sql.DataSource;
 //This class will work as a Model of the MVC structure
 public class StudentDbUtil {
 
-	private DataSource datasource;
+	private DataSource dataSource;
 
-	public StudentDbUtil(DataSource theDatasource) {
-		this.datasource = theDatasource;
+	public StudentDbUtil(DataSource theDataSource) {
+		dataSource = theDataSource;
 	}
 	
-	public List<Student> getStudents() throws Exception{
+	public List<Student> getStudents() throws Exception {
+		
 		List<Student> students = new ArrayList<>();
 		
 		Connection myConn = null;
@@ -27,61 +28,59 @@ public class StudentDbUtil {
 		ResultSet myRs = null;
 		
 		try {
-			//get a connection
-			myConn = datasource.getConnection();
+			// get a connection
+			myConn = dataSource.getConnection();
 			
-			//create sql statement
+			// create sql statement
 			String sql = "select * from student order by last_name";
+			
 			myStmt = myConn.createStatement();
 			
-			//execute query
+			// execute query
 			myRs = myStmt.executeQuery(sql);
 			
-			//process result set
-			while(myRs.next()) {
-				//retrieve data from result set row
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
 				int id = myRs.getInt("id");
 				String firstName = myRs.getString("first_name");
 				String lastName = myRs.getString("last_name");
 				String email = myRs.getString("email");
 				
-				//create new student objec
-				Student tempStudent =new Student(id, firstName, lastName, email);
+				// create new student object
+				Student tempStudent = new Student(id, firstName, lastName, email);
 				
-				// add it to the list of the students
-				students.add(tempStudent);
+				// add it to the list of students
+				students.add(tempStudent);				
 			}
 			
-			
-			return students;
+			return students;		
 		}
 		finally {
-			//close JDBC objects
-			close(myConn,myStmt,myRs);
-		}
-	
-		
+			// close JDBC objects
+			close(myConn, myStmt, myRs);
+		}		
 	}
 
 	private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
-		// TODO Auto-generated method stub
+
 		try {
-			if(myConn != null) {
+			if (myRs != null) {
 				myRs.close();
 			}
 			
-			if(myStmt != null) {
+			if (myStmt != null) {
 				myStmt.close();
 			}
 			
-			if(myConn != null) {
-				myConn.close();
+			if (myConn != null) {
+				myConn.close();   // doesn't really close it ... just puts back in connection pool
 			}
 		}
-		catch(Exception exc) {
+		catch (Exception exc) {
 			exc.printStackTrace();
 		}
-		
 	}
 
 	public void addStudent(Student theStudent) throws Exception {
@@ -91,7 +90,7 @@ public class StudentDbUtil {
 		
 		try {
 			// get db connection
-			myConn = datasource.getConnection();
+			myConn = dataSource.getConnection();
 			
 			// create sql for insert
 			String sql = "insert into student "
@@ -115,85 +114,99 @@ public class StudentDbUtil {
 	}
 
 	public Student getStudent(String theStudentId) throws Exception {
-		//TODO 
+
 		Student theStudent = null;
+		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
 		int studentId;
 		
 		try {
-			//conveert studentid to int
+			// convert student id to int
 			studentId = Integer.parseInt(theStudentId);
 			
-			//get connection to the databse
-			myConn = datasource.getConnection();
-			//create sql to get the selected the student
+			// get connection to database
+			myConn = dataSource.getConnection();
+			
+			// create sql to get selected student
 			String sql = "select * from student where id=?";
 			
-			//create prepared statement
+			// create prepared statement
 			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
 			myStmt.setInt(1, studentId);
 			
-			//execute statement
+			// execute statement
 			myRs = myStmt.executeQuery();
 			
-			//retrieve data form result set row
-			if(myRs.next()) {
-				String fName =  myRs.getString("first_name");
-				String lName = myRs.getString("last_name");
+			// retrieve data from result set row
+			if (myRs.next()) {
+				String firstName = myRs.getString("first_name");
+				String lastName = myRs.getString("last_name");
 				String email = myRs.getString("email");
-				theStudent = new Student(studentId,fName,lName,email);
+				
+				// use the studentId during construction
+				theStudent = new Student(studentId, firstName, lastName, email);
 			}
 			else {
-				throw new Exception("Could not find student id: "+studentId);
-			}		
+				throw new Exception("Could not find student id: " + studentId);
+			}				
 			
 			return theStudent;
-			
 		}
 		finally {
+			// clean up JDBC objects
 			close(myConn, myStmt, myRs);
 		}
-		
 	}
 
-	public void updateStudent(Student theStudent) throws Exception{
-	// update student record of a give studentid with approprate student object values
-		//create connection objects
-		System.out.println("dbutil update student entered");
+	public void updateStudent(Student theStudent) throws Exception {
+		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
-		try {
-			//int theStudentId = Integer.parseInt(studentId);
-			
-			//initialize connection object
-			myConn = datasource.getConnection();
-		//write sql statements
-			String sql = "update student set first_name=?, "
-					+ "last_name=?, email=? "
-					+ "where id=?";
 		
-		//preparestatement by inserting parameters
+		PreparedStatement myStmt1 = null;
+
+		try {
+			// get db connection
+			myConn = dataSource.getConnection();
+			
+			// create SQL update statement
+			String sql = "update student "
+						+ "set first_name=?, last_name=?, email=? "
+						+ "where id=?";
+			
+			// prepare statement
 			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
 			myStmt.setString(1, theStudent.getFirstName());
 			myStmt.setString(2, theStudent.getLastName());
 			myStmt.setString(3, theStudent.getEmail());
 			myStmt.setInt(4, theStudent.getId());
-		
-		//execute query
-		
-			if(!myStmt.execute()) {
-				throw new Exception("query problem");
-			}
+			
+			// execute SQL statement
+			myStmt.execute();
+			
+			String sql1 = "insert into student "
+					   + "(first_name, last_name, email) "
+					   + "values (?, ?, ?)";
+			
+			/*myStmt1 = myConn.prepareStatement(sql1);
+			myStmt1.setString(1, theStudent.getFirstName());
+			myStmt1.setString(2, theStudent.getLastName());
+			myStmt1.setString(3, theStudent.getEmail());
+			myStmt1.execute();*/
+			
 			
 		}
 		finally {
-			//close the connections
+			// clean up JDBC objects
 			close(myConn, myStmt, null);
-		}		
+		}
 	}
-	
 	
 	
 	

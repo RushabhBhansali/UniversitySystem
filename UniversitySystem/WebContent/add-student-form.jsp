@@ -11,7 +11,7 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h2>FooBar University</h2>
+			<h2>University Name</h2>
 		</div>
 	</div>
 	
@@ -57,6 +57,12 @@
 </body>
 
 </html>
+
+
+
+
+
+
 
 
 
